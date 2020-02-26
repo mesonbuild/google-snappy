@@ -79,12 +79,12 @@ foreach f : ['expect', 'ctzll']
     conf.set('HAVE_BULITIN_' + f.to_upper(), 1)
   endif
 endforeach
-if conf.get('HAVE_SYS_MMAN_H') == 1
+if conf.get('HAVE_SYS_MMAN_H', 0) == 1
   if cpp.has_function('mmap', prefix : '#include <sys/mman.h>')
     conf.set('HAVE_FUNC_MMAP', 1)
   endif
 endif
-if conf.get('HAVE_UNISTD_H') == 1
+if conf.get('HAVE_UNISTD_H', 0) == 1
   if cpp.has_function('sysconf', prefix : '#include <unistd.h>')
     conf.set('HAVE_FNC_SYSCONF', 1)
   endif
@@ -96,7 +96,7 @@ configure_file(
 )
 
 foreach h : ['HAVE_STDINT_H', 'HAVE_STDDEF_H', 'HAVE_SYS_UIO_H']
-  pconf.set10(h + '_01', conf.get(h) == 1)
+  pconf.set(h + '_01', conf.get(h, 0))
 endforeach
 
 version = meson.project_version().split('.')
