@@ -60,20 +60,6 @@ foreach h : ['byteswap.h', 'stddef.h', 'stdint.h', 'sys/endian.h',
   endif
 endforeach
 
-dep_zlib = dependency('zlib', required : false, fallback : ['zlib', 'zlib_dep'])
-if dep_zlib.found()
-  conf.set('HAVE_LIBZ', 1)
-endif
-
-dep_lzo2 = dependency('lzo2', required : false)
-if dep_lzo2.found()
-  if cpp.has_function('lzo1x_1_15_compress', dependencies : dep_lzo2)
-    conf.set('HAVE_LIBLZO2', 1)
-  else
-    dep_lzo2 = dep_null
-  endif
-endif
-
 foreach f : ['expect', 'ctzll']
   if cpp.has_function(f)
     conf.set('HAVE_BULITIN_' + f.to_upper(), 1)
